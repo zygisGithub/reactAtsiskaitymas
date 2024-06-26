@@ -1,23 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
-
+import useStore from "./store/store";
+import {Route} from "react-router-dom";
+import {Routes} from "react-router-dom";
+import {BrowserRouter} from "react-router-dom";
+import Toolbar from "./components/toolbar";
+import Home from "./pages/home";
+import Register from "./pages/register";
+import Login from "./pages/login";
+import YourPosts from "./pages/yourPosts";
+import Favorites from "./pages/favorites";
+import SinglePost from "./pages/singlePost";
+import UserPosts from "./pages/userPosts";
 function App() {
+
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <BrowserRouter>
+
+            <Toolbar/>
+            <Routes>
+                <Route path='/' element={<Home/>}/>
+                <Route path='/login' element={<Login/>}/>
+                <Route path='/register' element={<Register/>}/>
+                <Route path='/favorites' element={<Favorites/>}/>
+                <Route path='/yourposts' element={<YourPosts/>}/>
+                <Route path='/singlepost/:username/:id' element={<SinglePost/>}/>
+                <Route path='/userposts/:username' element={<UserPosts/>}/>
+            </Routes>
+        </BrowserRouter>
     </div>
   );
 }
