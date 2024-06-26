@@ -115,12 +115,12 @@ const Home = () => {
                                         />
                                     </svg>
                                 )}
-                                <img style={{ width: '300px', height: '300px', cursor:'pointer' }} src={user.image} alt=""  onClick={()=> nav(`/singlepost/${user.username}/${user.id}`)} />
+                                <img style={{ width: '300px', height: '300px', cursor:'pointer' }} src={user.image} alt=""/>
                                 <div>
                                     <h2 onClick={()=> nav(`/userposts/${user.username}`)}>Autorius: {user.username}</h2>
                                     <h2>{user.title}</h2>
-                                    <p>{user.description}</p>
                                     <h3>Paskelbta: {formatTimestamp(user.timestamp)}</h3>
+                                    <div onClick={()=> nav(`/singlepost/${user.username}/${user.id}`)}  className='button'>Skaityti</div>
                                 </div>
                             </div>
                         </div>

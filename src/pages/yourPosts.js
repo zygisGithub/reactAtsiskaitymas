@@ -3,7 +3,7 @@ import useStore from "../store/store";
 import formatTimestamp from '../plugins/formatTimestamp.js'
 
 const YourPosts = () => {
-    const { toggleFavorite, favorites} = useStore();
+    const { toggleFavorite, favorites } = useStore();
     const [errorCreate, setErrorCreate] = useState('');
     const [errorUpdate, setErrorUpdate] = useState('');
     const [username, setUsername] = useState('');
@@ -16,7 +16,6 @@ const YourPosts = () => {
     const imageInputUpdate = useRef();
     const descriptionInputUpdate = useRef();
     const [secret, setSecret] = useState('');
-
 
     useEffect(() => {
         const newSecret = localStorage.getItem('secretKey');
@@ -121,23 +120,29 @@ const YourPosts = () => {
             });
     }
 
+    async function deletePost(id) {
+        try {
+            await toggleFavorite(id, secret);
 
-    function deletePost(id) {
-        const options = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ secretKey: secret, id }),
-        };
+            const options = {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ secretKey: secret, id }),
+            };
 
-        fetch('http://167.99.138.67:1111/deletepost', options)
-            .then(res => res.json())
-            .then(data => {
-                if (!data.success) {
-                    console.log('BAD REQUEST')
-                }
-            })
+            const res = await fetch('http://167.99.138.67:1111/deletepost', options);
+            const data = await res.json();
+
+            if (!data.success) {
+                console.log('BAD REQUEST');
+            } else {
+                setNewData(newData.filter(post => post.id !== id));
+            }
+        } catch (error) {
+            console.error('Error deleting post:', error);
+        }
     }
 
     const isFavorited = (postId) => {
@@ -193,13 +198,13 @@ const YourPosts = () => {
                                         <p>{post.description}</p>
                                         <p>Įrašo ID: {post.id}</p>
                                         <h3>Paskelbta: {formatTimestamp(post.timestamp)}</h3>
-                                        <div className='button' onClick={deletePost}>Ištrinti įrašą</div>
+                                        <div className='button' onClick={() => deletePost(post.id)}>Ištrinti įrašą</div>
                                     </div>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p>Nėra mėgstamiausių įrašų</p>
+                        <p>Nėra įrašų</p>
                     )}
                 </div>
             </div>
